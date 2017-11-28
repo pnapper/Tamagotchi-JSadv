@@ -1,4 +1,4 @@
-import { Tamagotchi} from './../tamagotchi.js';
+import { Tamagotchi} from './../js/tamagotchi.js';
 
 describe('Tamagotchi', function() {
   let pika = new Tamagotchi("Pika");
