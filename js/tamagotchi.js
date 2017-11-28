@@ -2,9 +2,9 @@ export class Tamagotchi {
 
   constructor(name) {
       this.name = name;
-      this.foodLevel = 10;
-      this.happinessLevel = 10;
-      this.restLevel = 10;
+      this.foodLevel = 100;
+      this.happinessLevel = 100;
+      this.restLevel = 100;
     }
 
     setHunger() {
@@ -34,22 +34,22 @@ export class Tamagotchi {
     }
 
     feed() {
-      this.foodLevel +=2;
-      this.restlevel -=1;
-      this.happinessLevel +=1;
+      this.foodLevel +=20;
+      this.restlevel -=10;
+      this.happinessLevel +=10;
     }
 
     playgame() {
-      this.happinessLevel +=2;
-      this.restlevel -=1;
-      this.foodLevel -=1;
+      this.happinessLevel +=20;
+      this.restlevel -=10;
+      this.foodLevel -=10;
 
     }
 
     sleep() {
-      this.restLevel +=2;
-      this.happinessLevel -=1;
-      this.foodLevel -=1;
+      this.restLevel +=20;
+      this.happinessLevel -=10;
+      this.foodLevel -=10;
     }
 
 }
