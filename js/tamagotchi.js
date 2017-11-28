@@ -35,14 +35,21 @@ export class Tamagotchi {
 
     feed() {
       this.foodLevel +=2;
+      this.restlevel -=1;
+      this.happinessLevel +=1;
     }
 
-    play() {
+    playgame() {
       this.happinessLevel +=2;
+      this.restlevel -=1;
+      this.foodLevel -=1;
+
     }
 
     sleep() {
       this.restLevel +=2;
+      this.happinessLevel -=1;
+      this.foodLevel -=1;
     }
 
 }
