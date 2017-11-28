@@ -1,9 +1,9 @@
 {
   "name": "tamagotchi",
   "version": "1.0.0",
-  "main": "gulpfile.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "karma start karma.conf.js"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +20,7 @@
     "gulp-jshint": "^2.0.4",
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.8",
+    "jasmine": "^2.8.0",
     "jasmine-core": "^2.8.0",
     "jshint": "^2.9.5",
     "karma": "^1.7.1",
@@ -32,6 +33,8 @@
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.9.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "nyc": "^11.3.0"
+  },
   "description": ""
 }

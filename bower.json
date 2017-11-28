@@ -1,7 +1,7 @@
 {
   "name": "tamagotchi",
   "description": "",
-  "main": "gulpfile.js",
+  "main": "index.js",
   "license": "ISC",
   "homepage": "",
   "ignore": [
