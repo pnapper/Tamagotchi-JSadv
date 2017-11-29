@@ -54,6 +54,8 @@ var Tamagotchi = exports.Tamagotchi = function () {
     value: function petDies() {
       if (this.foodLevel <= 0 || this.happinessLevel <= 0 || this.restLevel <= 0) {
         return true;
+      } else if (this.foodLevel >= 105 || this.happinessLevel >= 105 || this.restLevel >= 105) {
+        return true;
       } else {
         return false;
       }
@@ -61,23 +63,23 @@ var Tamagotchi = exports.Tamagotchi = function () {
   }, {
     key: "feed",
     value: function feed() {
-      this.foodLevel += 20;
-      this.restlevel -= 10;
-      this.happinessLevel += 10;
+      this.foodLevel += 12;
+      this.restlevel -= 6;
+      this.happinessLevel += 2;
     }
   }, {
     key: "playgame",
     value: function playgame() {
-      this.happinessLevel += 20;
-      this.restlevel -= 10;
-      this.foodLevel -= 10;
+      this.happinessLevel += 12;
+      this.restlevel -= 7;
+      this.foodLevel -= 3;
     }
   }, {
     key: "sleep",
     value: function sleep() {
-      this.restLevel += 20;
-      this.happinessLevel -= 10;
-      this.foodLevel -= 10;
+      this.restLevel += 12;
+      this.happinessLevel -= 8;
+      this.foodLevel -= 4;
     }
   }]);
 
@@ -95,17 +97,24 @@ var apiKey = require('./../.env').apiKey;
 $(document).ready(function () {
   $('#createPet').click(function (event) {
     event.preventDefault();
-    $('.gif').empty();
+    $('#createPet').hide();
+    $('#nameLabel').hide();
+    $('#name').hide();
+    // startTimer();
+
     var name = $('#name').val();
     var pet = new _tamagotchi.Tamagotchi(name);
+    DisplayGIF(name);
     showPetName(name);
     showPetHealth(name);
     pet.setHunger();
     pet.setHappiness();
     pet.setRest();
-    setInterval(function () {
+    var myInterval = setInterval(function () {
       showPetHealth(name);
+      checkPetHealth(name);
     }, 1000);
+
     function showPetName(name) {
       $("#petName").empty();
       $("#petName").append("<h2>" + name + "</h2>");
@@ -123,11 +132,11 @@ $(document).ready(function () {
       var restLevel = pet.restLevel;
       console.log(restLevel);
 
-      $('#foodLevel').append("<div class='card yellow' style='width:" + foodLevel + "%;'><p>Food</p></div>\n<button class='waves-effect waves-light btn' id='feedPet' type='button' name='feed'>Feed</button>");
+      $('#foodLevel').append("<div class='card yellow' style='width:" + foodLevel + "%;'><p>Food ||  " + foodLevel + "</p></div>\n<button class='waves-effect waves-light btn' id='feedPet' type='button' name='feed'>Feed</button>");
 
-      $('#happinessLevel').append("<div class='card light-green' style='width:" + happinessLevel + "%;'><p>Happiness</p></div>\n<button class='waves-effect waves-light btn' id='playWithPet' type='button' name='play'>Play</button>");
+      $('#happinessLevel').append("<div class='card light-green' style='width:" + happinessLevel + "%;'><p>Happiness ||  " + happinessLevel + "</p></div>\n<button class='waves-effect waves-light btn' id='playWithPet' type='button' name='play'>Play</button>");
 
-      $('#restLevel').append("<div class='card light-blue' style='width:" + restLevel + "%;'><p>Rest</p></div>\n<button class='waves-effect waves-light btn' id='restPet' type='button' name='sleep'>Sleep</button>");
+      $('#restLevel').append("<div class='card light-blue' style='width:" + restLevel + "%;'><p>Rest ||  " + restLevel + "</p> </div>\n<button class='waves-effect waves-light btn' id='restPet' type='button' name='sleep'>Sleep</button>");
 
       $('#feedPet').click(function (event) {
         console.log("FED!!!!");
@@ -149,37 +158,64 @@ $(document).ready(function () {
       });
     }
 
-    var keyword = $('#name').val();
-    $('#keyword').val("");
+    function checkPetHealth(name) {
+      if (pet.petDies() == true) {
+        var dead = "game over";
+        clearInterval(myInterval);
+        $('#petHealth').empty();
+        DisplayGIF(dead);
+        // console.log("time"+time);
+        $('#petHealth').append("<h1>Game Over! " + name + " has died</h1><Your Time: x seconds");
+      }
+    }
 
-    var promise = new Promise(function (resolve, reject) {
-      var request = new XMLHttpRequest();
-      var url = 'http://api.giphy.com/v1/gifs/search?q=' + keyword + '&api_key=' + apiKey + '&limit=25';
-      request.onload = function () {
-        if (this.status === 200) {
-          resolve(request.response);
-        } else {
-          reject(Error(request.statusText));
-        }
-      };
-      request.open("GET", url, true);
-      request.send();
-    });
+    // function startTimer() {
+    //   let startTime = new Date();
+    // };
+    //
+    // function endTimer() {
+    //   let endTime = new Date();
+    //   var timeDiff = endTime - startTime; //in ms
+    //   // strip the ms
+    //   timeDiff /= 1000;
+    //
+    //   // get seconds
+    //   let seconds = Math.round(timeDiff);
+    //   return seconds;
+    //   console.log(seconds + " seconds");
+    // }
 
-    promise.then(function (response) {
-      var body = JSON.parse(response);
-      var number = Math.floor(Math.random() * 25);
-      console.log(number);
-      var image = body.data[number];
-      console.log(body);
-      console.log(image);
-      // image.data.forEach(function(image) {
-      $('.gif').append("<img src=" + image.images.downsized.url + ">");
-      // },
-      // function(error) {
-      //   $('.showErrors').text(`There was an error processing your request: ${error.message}`);
-      // };
-    });
+    function DisplayGIF(name) {
+      $('.gif').empty();
+      var promise = new Promise(function (resolve, reject) {
+        var request = new XMLHttpRequest();
+        var url = 'http://api.giphy.com/v1/gifs/search?q=' + name + '&api_key=' + apiKey + '&limit=25';
+        request.onload = function () {
+          if (this.status === 200) {
+            resolve(request.response);
+          } else {
+            reject(Error(request.statusText));
+          }
+        };
+        request.open("GET", url, true);
+        request.send();
+      });
+
+      promise.then(function (response) {
+        var body = JSON.parse(response);
+        var number = Math.floor(Math.random() * 25);
+        console.log(number);
+        var image = body.data[number];
+        console.log(body);
+        console.log(image);
+        // image.data.forEach(function(image) {
+        $('.gif').append("<img src=" + image.images.downsized.url + ">");
+        // },
+        // function(error) {
+        //   $('.showErrors').text(`There was an error processing your request: ${error.message}`);
+        // };
+      });
+    }
   });
 });
 

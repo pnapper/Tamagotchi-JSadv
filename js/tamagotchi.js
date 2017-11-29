@@ -28,28 +28,30 @@ export class Tamagotchi {
     petDies() {
       if (this.foodLevel<=0 || this.happinessLevel<=0 || this.restLevel<=0) {
         return true;
+      } else if (this.foodLevel>=105 || this.happinessLevel>=105 || this.restLevel>=105) {
+        return true;
       } else {
         return false;
       }
     }
 
     feed() {
-      this.foodLevel +=20;
-      this.restlevel -=10;
-      this.happinessLevel +=10;
+      this.foodLevel +=12;
+      this.restlevel -=6;
+      this.happinessLevel +=2;
     }
 
     playgame() {
-      this.happinessLevel +=20;
-      this.restlevel -=10;
-      this.foodLevel -=10;
+      this.happinessLevel +=12;
+      this.restlevel -=7;
+      this.foodLevel -=3;
 
     }
 
     sleep() {
-      this.restLevel +=20;
-      this.happinessLevel -=10;
-      this.foodLevel -=10;
+      this.restLevel +=12;
+      this.happinessLevel -=8;
+      this.foodLevel -=4;
     }
 
 }
